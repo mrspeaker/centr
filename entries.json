@@ -1,0 +1,42 @@
+[
+    {
+        "name": "_meta.json",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "name": "Cargo.toml",
+        "x": 100,
+        "y": 0
+    },
+    {
+        "name": "entries.json",
+        "x": 200,
+        "y": 0
+    },
+    {
+        "name": "target",
+        "x": 0,
+        "y": 100
+    },
+    {
+        "name": "Cargo.lock",
+        "x": 100,
+        "y": 100
+    },
+    {
+        "name": ".gitignore",
+        "x": 200,
+        "y": 100
+    },
+    {
+        "name": ".git",
+        "x": 0,
+        "y": 200
+    },
+    {
+        "name": "src",
+        "x": 100,
+        "y": 200
+    }
+]
