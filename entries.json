@@ -1,41 +1,43 @@
 [
     {
-        "name": "_meta.json",
-        "x": 0,
-        "y": 0
-    },
-    {
         "name": "Cargo.toml",
+        "kind": "file",
         "x": 100,
         "y": 0
     },
     {
         "name": "entries.json",
+        "kind": "file",
         "x": 200,
         "y": 0
     },
     {
         "name": "target",
+        "kind": "folder",
         "x": 0,
         "y": 100
     },
     {
         "name": "Cargo.lock",
+        "kind": "file",
         "x": 100,
         "y": 100
     },
     {
         "name": ".gitignore",
+        "kind": "file",
         "x": 200,
         "y": 100
     },
     {
         "name": ".git",
+        "kind": "file",
         "x": 0,
         "y": 200
     },
     {
         "name": "src",
+        "kind": "folder",
         "x": 100,
         "y": 200
     }

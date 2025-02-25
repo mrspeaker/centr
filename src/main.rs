@@ -10,9 +10,17 @@ use serde::{Serialize, Deserialize};
 
 use serde_json;
 
+#[derive(PartialEq, Serialize, Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+enum ResourceType {
+    Folder,
+    File
+}
+
 #[derive(Component, Serialize, Deserialize, Debug)]
 struct Icon {
     name: String,
+    kind: ResourceType,
     x: f32,
     y: f32
 }
@@ -23,6 +31,7 @@ struct SaveMeta;
 fn main() {
     let person = Icon {
         name: String::from("My folder3"),
+        kind: ResourceType::Folder,
         x: 100.0,
         y: 100.0
     };
@@ -52,18 +61,13 @@ fn setup(
     };
 
     for ico in read_meta_n_files() {
+        let col = if ico.kind == ResourceType::Folder { Srgba::hex("#aa3388").unwrap() } else { Srgba::hex("#33aa88").unwrap() };
         commands.spawn((
             Name::new("Folder"),
-            Sprite::sized(Vec2::new(64., 64.)),
+            Sprite::from_color(col, Vec2::new(64., 64.)),
             Transform::from_xyz(ico.x, ico.y, 0.0),
             Visibility::default()
         )).with_children(|f| {
-            /*f.spawn((
-                Mesh2d(meshes.add(Rectangle::default())),
-                MeshMaterial2d(materials.add(Color::from(PURPLE))),
-                Transform::default()
-                    .with_scale(Vec3::splat(64.))
-            ));*/
             f.spawn((
                 Text2d::new(ico.name.clone()),
                 font.clone(),
@@ -72,7 +76,7 @@ fn setup(
             ));
         })
             .observe(recolor_on::<Pointer<Over>>(Srgba::hex("#990088").unwrap().into()))
-            .observe(recolor_on::<Pointer<Out>>(Srgba::hex("#ff00ff").unwrap().into()));
+            .observe(recolor_on::<Pointer<Out>>(Srgba::hex("#aa3388").unwrap().into()));
     }
     commands.spawn((
         Name::new("Crosshair"),
@@ -167,12 +171,13 @@ fn read_meta_n_files() -> Vec<Icon> {
     let mut icons: Vec<Icon> = Vec::new();
     for entry in fs::read_dir(".").unwrap() {
         let entry = entry.unwrap();
-        let entry_name = String::from(entry.file_name().to_str().unwrap());
-        let ico = if icon_map.contains_key(&entry_name) {
-            let pos = icon_map.get(&entry_name).unwrap();
-            Icon { name: entry_name, x: pos.0, y: pos.1 }
+        let name = String::from(entry.file_name().to_str().unwrap());
+        let kind = if entry.file_type().unwrap().is_dir() { ResourceType::Folder } else { ResourceType::File };
+        let ico = if icon_map.contains_key(&name) {
+            let pos = icon_map.get(&name).unwrap();
+            Icon { name, kind, x: pos.0, y: pos.1 }
         } else {
-            Icon{ name: entry_name, x: 0.0, y: 0.0 }
+            Icon{ name, kind, x: 0.0, y: 0.0 }
         };
         icons.push(ico)
     };
